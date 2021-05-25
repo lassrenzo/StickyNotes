@@ -1,0 +1,52 @@
+body{
+    margin: 0px;
+    padding: 15px;
+}
+.note {
+    width: 250px; 
+    height: 150px;
+    background-color: yellow;
+    padding: 15px;
+    border: 1px solid orange;
+    cursor: -webkit-grab;
+    -webkit-box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
+    box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
+    position: absolute;
+    }
+textarea{
+    width: 240px;
+    height: 120px;
+    }
+.board {
+    background-color: #eab92d;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    }
+.note p {
+    font-size: 22px;
+    padding: 5px;
+    font-family: 'Shadows Into Light', 'Tangerine', Arial;
+    }
+.note:hover > span {
+    opacity: 1;
+}
+.note > span {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    opacity: 0;
+    transition: opacity .25s linear;
+}
+.note button {
+    margin: 2px;
+}
+.note > textarea {
+    height: 75%;
+    background: rgba(255, 255, 255, .5);
+}
+.note:active {
+    cursor: -webkit-grabbing;
+}
