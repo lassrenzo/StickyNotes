@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sticky Notes</title>
 
     <!-- REACT CDN -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
@@ -27,192 +27,139 @@
     <!-- FONT AWESOME CDN -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     
-
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<style>
-
-    body{
-        margin: 0px;
-        padding: 15px;
-    }
-    .note {
-        width: 250px;
-        height: 150px;
-        background-color: yellow;
-        padding: 15px;
-        border: 1px solid orange;
-        cursor: -webkit-grab;
-        -webkit-box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
-        box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
-        position: absolute;
-    }
-    textarea{
-        width: 240px;
-        height: 120px;
-    }
-    .board {
-        background-color: #eab92d;
-        position: fixed;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-    }
-    .note p {
-    font-size: 22px;
-    padding: 5px;
-    font-family: 'Shadows Into Light', 'Tangerine', Arial;
-    }
-    .note:hover > span {
-    opacity: 1;
-}
-.note > span {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    opacity: 0;
-    transition: opacity .25s linear;
-}
-.note button {
-    margin: 2px;
-}
-.note > textarea {
-    height: 75%;
-    background: rgba(255, 255, 255, .5);
-}
-.note:active {
-    cursor: -webkit-grabbing;
-}
-</style>
 <body>
 
-<div id="react-container"></div>
+<div id="react-container">React has not rendered yet.</div>
 
     <script type="text/babel">
+    var destination = document.getElementById('react-container')
+class Note extends React.Component {
 
-        class Note extends React.Component {
-
-            constructor(props){
-                super(props);
-                this.state = {
-                    editing: false
-                }
-            }
-
-            componentWillMount = () => {
-                this.style = {
-                    right: this.randomBetween( 0, window.innerWidth - 150, 'px'),
-                    top: this.randomBetween( 0, window.innerHeight - 150, 'px')
-                }
-            }
-            randomBetween =( x, y, s ) =>{
-                return( x + Math.ceil(Math.random() *(y-x)) ) + 5
-            }
-
-            edit = () => {
-                this.setState({ editing: true })
-            }
-
-            save = () => {
-                this.props.onChange(this.refs.newText.value, this.props.id)
-                this.setState({editing: false})
-             }
-
-            delete = (id) => {
-                this.props.onRemove(this.props.id)
-            }
-
-            renderForm = () => {
-                return (
-                <div className="note" style={this.style}>
-                <textarea ref="newText" placeholder="New Note!" className='form-control'></textarea>
-                <button onClick={this.save} className='btn btn-success btn-sm glyphicon glyphicon-floppy-disk'>Save</button> 
-            </div>
-                )
-
-            }
-
-            renderDisplay = () => {
-                return (
-                <div className="note" style={this.style}>
-                       <p>{this.props.children}</p>
-                       <span>
-                        <button onClick={this.edit} className='btn btn-primary fas fa-pencil'> Edit</button>
-                        <button onClick={this.delete} className='btn btn-danger fas fa-trash'> X</button>
-                        </span>
-                    </div>
-                    )   
-            }
-            
-            render(){
-               return( <ReactDraggable>{
-                   (this.state.editing ) ? this.renderForm() : this.renderDisplay()      
-               }</ReactDraggable>)
-               }
-}
-
-  ReactDOM.render( <Note>Hello World!</Note>, document.getElementById('react-container') )
-
-        class Board extends React.Component {
-
-            constructor(props){
-                super(props); 
-                    this.state = {
-                    notes: []
-                }
-            }
-
-            nextId = () => {
-                this.uniqueId = this.uniqueId || 0 
-                return this.uniqueId++
-            }
-
-            add = (text) => {
-                var notes = [
-                    ...this.state.notes,
-                    {
-                        id: this.nextId(),
-                        note: text
-                    }
-                ]
-                this.setState({notes})
-            }
-
-            update = ( newText, id ) => {
-                var notes = this.state.notes.map(
-                    note => ( note.id !== id) ?
-                        note:
-                        {
-                            ...note,
-                            note: newText 
-                        }
-                )
-                this.setState({notes})
-            }
-
-            remove = (id) => {
-                var notes = this.state.notes.filter(note => note.id !== id) 
-                this.setState({notes})
-            }
-
-            eachNote = ( note ) => {
-                return (<Note key={note.id}
-                                id={note.id}
-                                onChange={this.update}
-                                onRemove={this.remove}>{note.note}</Note>)
-            }
-
-            render(){
-                return(
-                <div className="board">
-                    {this.state.notes.map(this.eachNote)}
-                    <button class="btn btn-sm glyphicon glyphicon-plus btn-success far fa-plus" onClick={()=>this.add("New Note!")}></button>
-            </div>
-                )
-            }
+    constructor(props){
+        super(props);
+        this.state = {
+            editing: false
         }
-        ReactDOM.render( <Board count={10} />, document.getElementById('react-container') )
-    </script>
+    }
+    componentWillMount = () => {
+        this.style = {
+            right: this.randomBetween( 0, window.innerWidth - 150, 'px'),
+            top: this.randomBetween( 0, window.innerHeight - 150, 'px')
+        }
+    }
+    randomBetween =( x, y, s ) =>{
+        return( x + Math.ceil(Math.random() *(y-x)) ) + 5
+    }
+    
+    edit = () => {
+        this.setState({ editing: true })
+    }
+    
+    save = () => {
+        this.props.onChange(this.refs.newText.value, this.props.id)
+        this.setState({editing: false})
+     }
+    
+    delete = (id) => {
+        this.props.onRemove(this.props.id)
+    }
+    
+    renderForm = () => {
+        return (
+        <div className="note" style={this.style}>
+        <textarea ref="newText" placeholder="New Note!" className='form-control'></textarea>
+        <button onClick={this.save} className='btn btn-success btn-sm fas fa-save'>Save</button> 
+    </div>
+        )
+    
+    }
+    
+    renderDisplay = () => {
+        return (
+        <div className="note" style={this.style}>
+               <p>{this.props.children}</p>
+               <span>
+                <button onClick={this.edit} className='btn btn-primary fas fa-pencil'> Edit</button>
+                <button onClick={this.delete} className='btn btn-danger fas fa-trash'> X</button>
+                </span>
+            </div>
+            )   
+    }
+    
+    render(){
+       return( <ReactDraggable>{
+           (this.state.editing ) ? this.renderForm() : this.renderDisplay()      
+       }</ReactDraggable>)
+       }
+    }
 
+  
+    class Board extends React.Component {
+    
+    constructor(props){
+        super(props); 
+            this.state = {
+            notes: []
+        }
+    }
+    
+    nextId = () => {
+        this.uniqueId = this.uniqueId || 0 
+        return this.uniqueId++
+    }
+    
+    add = (text) => {
+        var notes = [
+            ...this.state.notes,
+            {
+                id: this.nextId(),
+                note: text
+            }
+        ]
+        this.setState({notes})
+    }
+    
+    update = ( newText, id ) => {
+        var notes = this.state.notes.map(
+            note => ( note.id !== id) ?
+                note:
+                {
+                    ...note,
+                    note: newText 
+                }
+        )
+        this.setState({notes})
+    }
+    
+    remove = (id) => {
+        var notes = this.state.notes.filter(note => note.id !== id) 
+        this.setState({notes})
+    }
+    
+    eachNote = ( note ) => {
+        return (<Note key={note.id}
+                        id={note.id}
+                        onChange={this.update}
+                        onRemove={this.remove}>{note.note}</Note>)
+    }
+    
+    render(){
+        return(
+        <div className="board">
+            {this.state.notes.map(this.eachNote)}
+            <button class="btn btn-sm btn-success far fa-plus" onClick={()=>this.add("New Note!")}></button>
+    </div>
+        )
+    }
+    }
+    ReactDOM.render( 
+        <div>
+           <Note> </Note> 
+        <Board count={10}/>
+    </div>, destination)
+ 
+    </script>
 </body>
 </html>
